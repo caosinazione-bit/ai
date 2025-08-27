@@ -1,4 +1,42 @@
 -- client.lua
+local policePed = nil
+local policeCoords = vector3(441.2, -981.8, 30.7) -- Mission Row davanti stazione
+
+CreateThread(function()
+    RequestModel(`s_m_y_cop_01`)
+    while not HasModelLoaded(`s_m_y_cop_01`) do
+        Wait(500)
+    end
+
+    policePed = CreatePed(4, `s_m_y_cop_01`, policeCoords, 90.0, false, true)
+    SetEntityInvincible(policePed, true)
+    FreezeEntityPosition(policePed, true)
+    SetBlockingOfNonTemporaryEvents(policePed, true)
+
+    exports['qb-target']:AddTargetEntity(policePed, {
+        options = {
+            {
+                type = "server",
+                event = "npc:police:dialogue",
+                icon = "fas fa-comments",
+                label = "Parla con l’agente"
+            },
+            {
+                type = "server",
+                event = "npc:police:fine",
+                icon = "fas fa-file-invoice-dollar",
+                label = "Ricevi una multa"
+            },
+            {
+                type = "server",
+                event = "npc:police:arrest",
+                icon = "fas fa-handcuffs",
+                label = "Fatti arrestare"
+            }
+        },
+        distance = 2.0
+    })
+end)
 local carDealerCoords = vector3(-56.49, -1096.58, 26.42)
 local carDealerPed = nil
 
