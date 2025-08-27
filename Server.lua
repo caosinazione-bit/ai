@@ -25,6 +25,15 @@ function AskGoogleAI(prompt, cb)
         end
     end, "POST", json.encode(data), {["Content-Type"] = "application/json"})
 end
+RegisterNetEvent("npc:police:dialogue", function()
+    local src = source
+    local Player = QBCore.Functions.GetPlayer(src)
+    local name = Player.PlayerData.charinfo.firstname
+
+    AskGoogleAI("Rispondi come un poliziotto severo ma gentile di Los Santos al cittadino "..name, function(response)
+        TriggerClientEvent("QBCore:Notify", src, response, "primary", 7000)
+    end)
+end)
 RegisterNetEvent("npc:policeInteract", function()
     local src = source
     local Player = QBCore.Functions.GetPlayer(src)
